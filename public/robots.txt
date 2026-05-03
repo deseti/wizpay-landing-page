@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://wizpay.xyz/sitemap.xml
