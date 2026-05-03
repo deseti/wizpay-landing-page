@@ -3,6 +3,121 @@ const SOCIAL_URL = 'https://x.com/wizpay_arc'
 const DOCS_URL = 'https://docs.wizpay.xyz'
 const DISCORD_URL = 'https://discord.gg/wizpay'
 
+const VALUE_BLOCKS = [
+  {
+    icon: '⚡',
+    title: 'Batch Execution',
+    desc: 'Bundle all your payments into a single execution — no matter how many recipients.',
+    accent: 'cyan',
+  },
+  {
+    icon: '🔒',
+    title: 'Atomic Settlement',
+    desc: 'Every payment in your batch settles together, on-chain. You always know the final state.',
+    accent: 'emerald',
+  },
+  {
+    icon: '🔗',
+    title: 'Multi-Chain',
+    desc: 'Move money on Ethereum, Solana, or Arc — from the same interface, without switching networks.',
+    accent: 'sky',
+  },
+  {
+    icon: '💰',
+    title: 'Cost Efficient',
+    desc: 'Batching means fewer transactions, less gas burned, and more value delivered.',
+    accent: 'amber',
+  },
+]
+
+const STEPS = [
+  {
+    num: '01',
+    title: 'Add your payments',
+    desc: 'Enter recipients and amounts. As many as you need — all in one place.',
+  },
+  {
+    num: '02',
+    title: 'WizPay groups them',
+    desc: 'Your payments are automatically bundled into a single execution batch.',
+  },
+  {
+    num: '03',
+    title: 'One click. Everything settles.',
+    desc: 'Hit execute. WizPay routes, processes, and settles every payment on-chain — all at once.',
+  },
+]
+
+const CAPABILITIES = [
+  {
+    icon: '📦',
+    label: 'Batch Payments',
+    title: 'Send to many recipients in a single execution.',
+    desc: 'No loops. No repeating. Just one flow.',
+  },
+  {
+    icon: '🌉',
+    label: 'Bridge',
+    title: 'Move USDC across chains seamlessly.',
+    desc: 'Cross-chain transfers between Ethereum, Solana, and Arc — handled for you.',
+  },
+  {
+    icon: '🔄',
+    label: 'Swap',
+    title: 'Convert between assets directly.',
+    desc: 'Route through on-chain liquidity without leaving the platform.',
+  },
+  {
+    icon: '💱',
+    label: 'FX',
+    title: 'Switch between stablecoins.',
+    desc: 'USDC to EURC and back. Built-in forex for global payments.',
+  },
+  {
+    icon: '🏦',
+    label: 'Liquidity',
+    title: 'Provide capital, earn from swap activity.',
+    desc: 'A built-in LP system that keeps the engine running.',
+  },
+]
+
+const WHY_ITEMS = [
+  { icon: '⚡', text: 'Fast — Payments execute in seconds, not hours.' },
+  { icon: '🧩', text: 'Simple — No complex setup. Create, batch, execute.' },
+  { icon: '📈', text: 'Scalable — 5 payments or 500 — same flow, same speed.' },
+  { icon: '🔗', text: 'On-chain — Everything settles on-chain. Fully verifiable.' },
+  { icon: '💰', text: 'Efficient — Lower gas, fewer transactions, better economics.' },
+]
+
+function Badge({ children, color = 'cyan' }) {
+  const colors = {
+    cyan: 'border-cyan-400/20 bg-cyan-400/10 text-cyan-200/85',
+    emerald: 'border-emerald-300/15 bg-emerald-300/10 text-emerald-100/85',
+    white: 'border-white/12 bg-white/10 text-white/80',
+  }
+  return (
+    <span className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] ${colors[color]}`}>
+      {children}
+    </span>
+  )
+}
+
+function SectionHeading({ badge, badgeColor, title, subtitle }) {
+  return (
+    <div className="max-w-2xl space-y-4">
+      {badge && <Badge color={badgeColor}>{badge}</Badge>}
+      <div className="space-y-3">
+        <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          {title}
+        </h2>
+        {subtitle && (
+          <p className="max-w-xl text-sm leading-7 text-slate-300 sm:text-base">{subtitle}</p>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function Home() {
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -19,24 +134,18 @@ function Home() {
         <div className="section-shell flex items-center justify-between py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/6 shadow-[0_0_40px_rgba(34,211,238,0.15)]">
-              <img
-                src="/favicon.ico"
-                alt="WizPay Logo"
-                width="22"
-                height="22"
-                className="rounded-md"
-              />
+              <img src="/favicon.ico" alt="WizPay Logo" width="22" height="22" className="rounded-md" />
             </div>
             <div>
               <p className="font-display text-lg font-semibold tracking-tight text-white">WizPay</p>
-              <p className="text-xs text-slate-400">Cross-Chain Payroll Platform</p>
+              <p className="text-xs text-slate-400">Move money on-chain</p>
             </div>
           </div>
 
           <nav className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
-            <a href="#features" className="transition hover:text-white">Features</a>
+            <a href="#what" className="transition hover:text-white">What It Does</a>
             <a href="#how-it-works" className="transition hover:text-white">How It Works</a>
-            <a href="#pricing" className="transition hover:text-white">Pricing</a>
+            <a href="#capabilities" className="transition hover:text-white">Capabilities</a>
           </nav>
 
           <a
@@ -50,24 +159,19 @@ function Home() {
 
       <main>
         {/* ══════════════════════════════════════════════════════
-            HERO SECTION
+            1. HERO SECTION
         ══════════════════════════════════════════════════════ */}
         <section className="section-shell grid gap-12 pb-18 pt-12 sm:pb-22 sm:pt-16 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-center lg:pt-24">
           <div className="animate-rise space-y-8">
-            <span className="inline-flex items-center rounded-full border border-emerald-300/15 bg-emerald-300/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-100/85">
-              Cross-Chain Stablecoin Payroll
-            </span>
+            <Badge color="emerald">Payment Execution System</Badge>
 
             <div className="space-y-5">
               <h1 className="font-display max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl lg:leading-[1.02]">
-                WizPay Cross-Chain Payroll
+                Move money on-chain, instantly.
               </h1>
               <p className="max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
-                The modern payroll infrastructure for startups, DAOs, and Web3 teams.
-                Send USDC and EURC payments across <strong className="text-white">Arc Testnet</strong>,{' '}
-                <strong className="text-white">Ethereum Sepolia</strong>, and{' '}
-                <strong className="text-white">Solana</strong> from a single dashboard.
-                Powered by Circle CCTP V2 for seamless cross-chain transfers with minimal gas fees.
+                Stop sending payments one by one. WizPay batches everything, executes once,
+                and settles on-chain — across any chain, in seconds.
               </p>
             </div>
 
@@ -77,7 +181,7 @@ function Home() {
                 id="cta-hero-primary"
                 className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 shadow-[0_20px_60px_rgba(255,255,255,0.12)] transition hover:-translate-y-0.5 hover:bg-slate-100"
               >
-                Launch App — It's Free
+                Start Moving Money →
               </a>
               <a
                 href="#how-it-works"
@@ -90,13 +194,13 @@ function Home() {
 
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-2xl border border-white/8 bg-white/5 px-4 py-4 text-sm leading-6 text-slate-200">
-                Batch payroll in one transaction
+                Batch payments in one execution
               </div>
               <div className="rounded-2xl border border-white/8 bg-white/5 px-4 py-4 text-sm leading-6 text-slate-200">
-                Bridge USDC across chains instantly
+                Move money across chains
               </div>
               <div className="rounded-2xl border border-white/8 bg-white/5 px-4 py-4 text-sm leading-6 text-slate-200">
-                Swap between USDC and EURC
+                Convert between stablecoins
               </div>
             </div>
           </div>
@@ -106,10 +210,10 @@ function Home() {
               <div className="mb-4 flex items-center justify-between rounded-[24px] border border-white/8 bg-white/6 px-4 py-3">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                    Payroll Dashboard
+                    Payment Dashboard
                   </p>
                   <p className="mt-2 font-display text-2xl font-semibold text-white sm:text-3xl">
-                    Clear, fast, premium
+                    Batch. Execute. Done.
                   </p>
                 </div>
                 <div className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-semibold text-emerald-100">
@@ -120,7 +224,7 @@ function Home() {
               <div className="overflow-hidden rounded-[28px] border border-white/8 bg-[#0b1120] p-2 shadow-[0_30px_90px_rgba(0,0,0,0.35)]">
                 <img
                   src="/hero-mockup.png"
-                  alt="WizPay cross-chain payroll dashboard showing batch USDC payments across Arc, Ethereum and Solana"
+                  alt="WizPay dashboard showing batch payment execution across multiple chains"
                   width="1400"
                   height="980"
                   loading="eager"
@@ -135,12 +239,12 @@ function Home() {
                   <p className="mt-1 text-sm leading-6 text-slate-400">Arc, Ethereum, Solana</p>
                 </div>
                 <div className="rounded-[24px] border border-white/8 bg-white/6 px-4 py-4">
-                  <p className="font-display text-2xl font-semibold text-white">2 tokens</p>
-                  <p className="mt-1 text-sm leading-6 text-slate-400">USDC &amp; EURC stablecoins</p>
+                  <p className="font-display text-2xl font-semibold text-white">50 max</p>
+                  <p className="mt-1 text-sm leading-6 text-slate-400">recipients per batch</p>
                 </div>
                 <div className="rounded-[24px] border border-white/8 bg-white/6 px-4 py-4">
                   <p className="font-display text-2xl font-semibold text-white">1 click</p>
-                  <p className="mt-1 text-sm leading-6 text-slate-400">batch payroll execution</p>
+                  <p className="mt-1 text-sm leading-6 text-slate-400">batch execution</p>
                 </div>
               </div>
             </div>
@@ -148,196 +252,208 @@ function Home() {
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            FEATURES — Bridge, Swap, Batch Payroll
+            2. WHAT WIZPAY ACTUALLY DOES
         ══════════════════════════════════════════════════════ */}
-        <section id="features" className="section-shell pb-18 sm:pb-22">
-          <div className="max-w-2xl space-y-4">
-            <span className="inline-flex items-center rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-200/85">
-              Core Features
-            </span>
-            <div className="space-y-3">
-              <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Everything you need for cross-chain stablecoin payroll
-              </h2>
-              <p className="max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-                WizPay combines bridging, swapping, and batch payments into one unified platform built
-                on Circle's CCTP V2 infrastructure. Pay your team in USDC or EURC across any supported chain.
-              </p>
+        <section id="what" className="section-shell pb-18 sm:pb-22">
+          <div className="surface-card rounded-[32px] p-6 sm:p-8 lg:p-10">
+            <div className="lg:grid lg:grid-cols-[1fr_1fr] lg:gap-12 lg:items-center">
+              <div className="space-y-6">
+                <Badge color="cyan">How It&apos;s Different</Badge>
+                <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  Not another wallet.<br />A payment execution system.
+                </h2>
+                <div className="space-y-4 text-sm leading-7 text-slate-300 sm:text-base">
+                  <p>
+                    Most tools make you send payments one at a time.
+                    Open wallet. Paste address. Set amount. Confirm. Repeat.
+                  </p>
+                  <p>
+                    <strong className="text-white">WizPay doesn&apos;t work like that.</strong>
+                  </p>
+                  <p>
+                    You create all your payments upfront — 5, 50, or 500.
+                    WizPay batches them together and executes everything in one go.
+                    Every payment settles on-chain, atomically.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 lg:mt-0">
+                <div className="rounded-[28px] border border-white/8 bg-[#0a0e1c] p-6 sm:p-8">
+                  <p className="text-center font-display text-lg font-semibold text-white mb-6">
+                    The WizPay difference
+                  </p>
+                  {/* Visual flow */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4 rounded-2xl border border-white/8 bg-white/5 px-4 py-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cyan-400/15 text-lg">📋</span>
+                      <div>
+                        <p className="text-sm font-semibold text-white">Create payments</p>
+                        <p className="text-xs text-slate-400">Add all recipients at once</p>
+                      </div>
+                    </div>
+                    <div className="flex justify-center text-slate-500">↓</div>
+                    <div className="flex items-center gap-4 rounded-2xl border border-white/8 bg-white/5 px-4 py-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 text-lg">📦</span>
+                      <div>
+                        <p className="text-sm font-semibold text-white">System batches them</p>
+                        <p className="text-xs text-slate-400">Grouped into one execution</p>
+                      </div>
+                    </div>
+                    <div className="flex justify-center text-slate-500">↓</div>
+                    <div className="flex items-center gap-4 rounded-2xl border border-cyan-300/20 bg-cyan-300/8 px-4 py-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cyan-400/20 text-lg">✅</span>
+                      <div>
+                        <p className="text-sm font-semibold text-cyan-100">Everything settles</p>
+                        <p className="text-xs text-cyan-200/60">On-chain. Atomic. Done.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="mt-6 text-center text-sm font-semibold text-slate-300">
+                    One execution → many payments → one result
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {/* Feature 1: Bridge */}
-            <article className="surface-card rounded-[28px] p-6">
-              <span className="inline-flex rounded-full border border-white/10 bg-white/6 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-200/80">
-                Bridge
-              </span>
-              <div className="mt-5 space-y-3">
-                <h3 className="font-display text-xl font-semibold tracking-tight text-white">
-                  Cross-Chain USDC Bridging via CCTP V2
-                </h3>
-                <p className="text-sm leading-7 text-slate-300">
-                  Move USDC and EURC seamlessly between Arc, Ethereum, and Solana using Circle's
-                  Cross-Chain Transfer Protocol Version 2. Unlike traditional bridges that rely on
-                  wrapped tokens and liquidity pools, CCTP V2 burns stablecoins on the source chain
-                  and mints native tokens on the destination chain. This means you always receive real,
-                  Circle-issued USDC — never a synthetic wrapper. Gas fees stay remarkably low because
-                  the protocol eliminates intermediary contracts. Whether you are moving payroll funds
-                  from Ethereum Sepolia to Arc Testnet or consolidating treasury from Solana, WizPay
-                  handles the routing, attestation, and finalization in one streamlined transaction.
-                  Your team receives native stablecoins every time.
-                </p>
-              </div>
-            </article>
-
-            {/* Feature 2: Swap */}
-            <article className="surface-card rounded-[28px] p-6">
-              <span className="inline-flex rounded-full border border-white/10 bg-white/6 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-200/80">
-                Swap
-              </span>
-              <div className="mt-5 space-y-3">
-                <h3 className="font-display text-xl font-semibold tracking-tight text-white">
-                  Instant USDC ↔ EURC Stablecoin Swap
-                </h3>
-                <p className="text-sm leading-7 text-slate-300">
-                  Convert between USDC and EURC directly within the WizPay dashboard without leaving
-                  the application or using a third-party DEX. Our integration with Circle's StableFX
-                  engine provides institutional-grade foreign exchange rates with transparent pricing
-                  and minimal slippage. This is critical for companies that operate across USD and EUR
-                  regions — pay your European contractors in EURC while holding your treasury in USDC,
-                  or vice versa. Every swap is settled on-chain with full transparency. Gas fees are
-                  optimized through batched approvals, and the entire swap lifecycle is tracked in your
-                  WizPay transaction history. No hidden fees, no wrapped intermediaries, just direct
-                  stablecoin conversion powered by Circle infrastructure and CCTP V2.
-                </p>
-              </div>
-            </article>
-
-            {/* Feature 3: Batch Payroll */}
-            <article className="surface-card rounded-[28px] p-6">
-              <span className="inline-flex rounded-full border border-white/10 bg-white/6 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-200/80">
-                Batch Payroll
-              </span>
-              <div className="mt-5 space-y-3">
-                <h3 className="font-display text-xl font-semibold tracking-tight text-white">
-                  Pay Your Entire Team in One Transaction
-                </h3>
-                <p className="text-sm leading-7 text-slate-300">
-                  Stop sending individual transfers to each team member. WizPay's batch payroll system
-                  lets you upload a CSV or manually input multiple recipients, set individual USDC or
-                  EURC amounts, and execute the entire payroll in a single on-chain transaction. Our
-                  smart contract bundles all transfers into one call, dramatically reducing gas fees
-                  compared to sending payments one by one. Support for ERC-4337 account abstraction
-                  means Smart Wallet users enjoy gasless, atomic execution. For EOA wallets like
-                  MetaMask, we implement sequential chunking to handle large batches reliably. Whether
-                  you are a DAO paying contributors across twenty wallets or a startup running monthly
-                  payroll, WizPay makes it as simple as uploading a spreadsheet and clicking send.
-                  Real-time status tracking shows you exactly when each payment lands.
-                </p>
-              </div>
-            </article>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            HOW IT WORKS — 3 Steps
+            3. VALUE BLOCKS
+        ══════════════════════════════════════════════════════ */}
+        <section className="section-shell pb-18 sm:pb-22">
+          <SectionHeading
+            badge="Why It Matters"
+            badgeColor="cyan"
+            title="Send many, execute once."
+            subtitle="WizPay turns complex multi-chain payments into a single, predictable execution."
+          />
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {VALUE_BLOCKS.map((block) => (
+              <article
+                key={block.title}
+                className="value-block surface-card rounded-[28px] p-6"
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/6 text-xl">
+                  {block.icon}
+                </span>
+                <div className="mt-5 space-y-2">
+                  <h3 className="font-display text-lg font-semibold tracking-tight text-white">
+                    {block.title}
+                  </h3>
+                  <p className="text-sm leading-7 text-slate-300">{block.desc}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            4. HOW IT WORKS — 3 Steps
         ══════════════════════════════════════════════════════ */}
         <section id="how-it-works" className="section-shell pb-18 sm:pb-22">
           <div className="surface-card rounded-[32px] p-6 sm:p-8 lg:p-10">
-            <div className="max-w-2xl space-y-4">
-              <span className="inline-flex items-center rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-200/85">
-                How It Works
-              </span>
-              <div className="space-y-3">
-                <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                  Three steps to cross-chain payroll
-                </h2>
-                <p className="max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-                  WizPay simplifies complex multi-chain payments into a workflow anyone can follow.
-                  No blockchain expertise required — just connect, input, and send.
-                </p>
-              </div>
-            </div>
+            <SectionHeading
+              badge="How It Works"
+              badgeColor="cyan"
+              title="Three steps. That's it."
+              subtitle="Create, batch, execute. No blockchain expertise required."
+            />
 
             <div className="mt-8 grid gap-4 lg:grid-cols-3">
-              {/* Step 1 */}
-              <article className="surface-card rounded-[28px] p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/10 text-sm font-semibold text-cyan-100">
-                  01
-                </div>
-                <div className="mt-5 space-y-3">
-                  <h3 className="font-display text-xl font-semibold tracking-tight text-white">
-                    Connect Your Wallet
-                  </h3>
-                  <p className="text-sm leading-7 text-slate-300">
-                    Open WizPay and connect your preferred wallet — MetaMask, Coinbase Smart Wallet,
-                    Rabby, or any WalletConnect-compatible provider. WizPay automatically detects your
-                    USDC and EURC balances across Arc Testnet, Ethereum Sepolia, and Solana. No lengthy
-                    onboarding or KYC process. Your wallet is your identity and you are ready to
-                    start sending payments in seconds.
-                  </p>
-                </div>
-              </article>
-
-              {/* Step 2 */}
-              <article className="surface-card rounded-[28px] p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/10 text-sm font-semibold text-cyan-100">
-                  02
-                </div>
-                <div className="mt-5 space-y-3">
-                  <h3 className="font-display text-xl font-semibold tracking-tight text-white">
-                    Input Your Batch Payment
-                  </h3>
-                  <p className="text-sm leading-7 text-slate-300">
-                    Add recipients manually or upload a CSV file with wallet addresses and amounts.
-                    Choose between USDC or EURC, select the source and destination chains, and review
-                    the total payroll cost including estimated gas fees. WizPay validates all addresses
-                    and amounts before you proceed, preventing costly mistakes. You can save recipient
-                    lists as templates for recurring payroll cycles.
-                  </p>
-                </div>
-              </article>
-
-              {/* Step 3 */}
-              <article className="surface-card rounded-[28px] p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/10 text-sm font-semibold text-cyan-100">
-                  03
-                </div>
-                <div className="mt-5 space-y-3">
-                  <h3 className="font-display text-xl font-semibold tracking-tight text-white">
-                    Send &amp; Track in Real Time
-                  </h3>
-                  <p className="text-sm leading-7 text-slate-300">
-                    Confirm the transaction and watch every payment land in real time. WizPay provides
-                    live status updates for each recipient — pending, bridging, confirmed, or completed.
-                    Cross-chain transfers via CCTP V2 include automatic attestation tracking so you know
-                    exactly when funds arrive on the destination chain. Download transaction reports for
-                    your accounting records when the batch is complete.
-                  </p>
-                </div>
-              </article>
+              {STEPS.map((step, i) => (
+                <article key={step.num} className={`surface-card rounded-[28px] p-6 ${i < STEPS.length - 1 ? 'step-connector' : ''}`}>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/10 text-sm font-semibold text-cyan-100">
+                    {step.num}
+                  </div>
+                  <div className="mt-5 space-y-3">
+                    <h3 className="font-display text-xl font-semibold tracking-tight text-white">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm leading-7 text-slate-300">{step.desc}</p>
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            CTA Section
+            5. CAPABILITIES
         ══════════════════════════════════════════════════════ */}
-        <section id="pricing" className="section-shell pb-24">
+        <section id="capabilities" className="section-shell pb-18 sm:pb-22">
+          <SectionHeading
+            badge="Capabilities"
+            badgeColor="cyan"
+            title="Everything you need to move money on-chain."
+          />
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {CAPABILITIES.map((cap) => (
+              <article key={cap.label} className="capability-card surface-card rounded-[28px] p-6">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/6 text-lg">
+                    {cap.icon}
+                  </span>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-200/80">
+                    {cap.label}
+                  </span>
+                </div>
+                <div className="mt-4 space-y-2">
+                  <h3 className="font-display text-base font-semibold tracking-tight text-white">
+                    {cap.title}
+                  </h3>
+                  <p className="text-sm leading-7 text-slate-300">{cap.desc}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            6. WHY WIZPAY
+        ══════════════════════════════════════════════════════ */}
+        <section className="section-shell pb-18 sm:pb-22">
+          <div className="lg:grid lg:grid-cols-[1fr_1.2fr] lg:gap-12 lg:items-center">
+            <div>
+              <SectionHeading
+                badge="Why WizPay"
+                badgeColor="emerald"
+                title="Built for speed, simplicity, and scale."
+              />
+            </div>
+            <div className="mt-8 lg:mt-0 space-y-3">
+              {WHY_ITEMS.map((item) => (
+                <div
+                  key={item.text}
+                  className="why-bullet flex items-center gap-4 rounded-2xl border border-white/8 bg-white/5 px-5 py-4"
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  <p className="text-sm leading-6 text-slate-200 sm:text-base">
+                    <strong className="text-white">{item.text.split(' — ')[0]}</strong>
+                    {' — '}
+                    {item.text.split(' — ')[1]}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            7. CLOSING CTA
+        ══════════════════════════════════════════════════════ */}
+        <section className="section-shell pb-24">
           <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(135deg,rgba(18,191,199,0.18),rgba(6,8,22,0.92)_45%,rgba(245,158,11,0.14))] px-6 py-8 sm:px-8 sm:py-10 lg:flex lg:items-center lg:justify-between lg:px-10">
             <div className="absolute right-0 top-0 h-44 w-44 rounded-full bg-white/12 blur-[120px]" />
             <div className="relative max-w-2xl space-y-4">
-              <span className="inline-flex items-center rounded-full border border-white/12 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/80">
-                Get Started Free
-              </span>
+              <Badge color="white">Ready?</Badge>
               <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Start paying your team across chains today
+                Stop sending payments one by one.<br />Start executing.
               </h2>
               <p className="text-sm leading-7 text-slate-100/78 sm:text-base">
-                WizPay is free to try on testnet. Connect your wallet, fund with faucet tokens, and
-                experience seamless cross-chain USDC and EURC payroll. No credit card, no commitment.
-                Built on Circle's CCTP V2 with gas-optimized smart contracts for the lowest possible
-                transaction costs.
+                Batch your payments, execute once, settle on-chain. Try WizPay on testnet — free, no commitment.
               </p>
             </div>
 
@@ -347,7 +463,7 @@ function Home() {
                 id="cta-bottom-primary"
                 className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-slate-100"
               >
-                Try WizPay Now
+                Launch WizPay →
               </a>
               <a
                 href={SOCIAL_URL}
@@ -363,41 +479,24 @@ function Home() {
         </section>
       </main>
 
-      {/* ══════════════════════════════════════════════════════
-          FOOTER
-      ══════════════════════════════════════════════════════ */}
+      {/* ── Footer ── */}
       <footer className="border-t border-white/8 bg-[#050816]/80 backdrop-blur-xl">
         <div className="section-shell flex flex-col items-center gap-6 py-8 sm:flex-row sm:justify-between">
           <div className="flex items-center gap-3">
             <img src="/favicon.ico" alt="WizPay" width="20" height="20" className="rounded-md" />
             <p className="text-sm text-slate-400">
-              © 2026 WizPay. Cross-chain payroll powered by Circle CCTP V2.
+              © 2026 WizPay. On-chain payment execution.
             </p>
           </div>
 
           <nav className="flex items-center gap-6" aria-label="Footer navigation">
-            <a
-              href={DOCS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-slate-400 transition hover:text-white"
-            >
+            <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-400 transition hover:text-white">
               Docs
             </a>
-            <a
-              href={SOCIAL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-slate-400 transition hover:text-white"
-            >
+            <a href={SOCIAL_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-400 transition hover:text-white">
               Twitter / X
             </a>
-            <a
-              href={DISCORD_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-slate-400 transition hover:text-white"
-            >
+            <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-400 transition hover:text-white">
               Discord
             </a>
           </nav>

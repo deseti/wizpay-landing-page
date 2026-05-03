@@ -63,6 +63,18 @@
   .delay-1 {
     animation-delay: 100ms;
   }
+
+  .delay-2 {
+    animation-delay: 200ms;
+  }
+
+  .delay-3 {
+    animation-delay: 300ms;
+  }
+
+  .delay-4 {
+    animation-delay: 400ms;
+  }
 }
 
 @keyframes rise {
@@ -74,6 +86,65 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes countPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.animate-count-pulse {
+  animation: countPulse 2.5s ease-in-out infinite;
+}
+
+/* ── Step connector line ── */
+.step-connector {
+  position: relative;
+}
+
+.step-connector::after {
+  content: '';
+  position: absolute;
+  top: 24px;
+  right: -2px;
+  width: 4px;
+  height: calc(100% - 48px);
+  background: linear-gradient(180deg, rgba(34, 211, 238, 0.3), rgba(34, 211, 238, 0.05));
+  border-radius: 2px;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .step-connector::after {
+    display: block;
+    top: 50%;
+    right: -8px;
+    width: calc(100% - 48px);
+    height: 2px;
+    left: 48px;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg, rgba(34, 211, 238, 0.3), rgba(34, 211, 238, 0.05));
   }
 }
 
@@ -176,4 +247,35 @@
 
 .animate-glow-pulse {
   animation: glowPulse 3.5s ease-in-out infinite;
+}
+
+/* ── Value block hover ── */
+.value-block {
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-block:hover {
+  transform: translateY(-4px);
+  border-color: rgba(34, 211, 238, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 30px rgba(34, 211, 238, 0.08);
+}
+
+/* ── Capability card hover ── */
+.capability-card {
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.capability-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34, 211, 238, 0.15);
+}
+
+/* ── Why bullet ── */
+.why-bullet {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.why-bullet:hover {
+  transform: translateX(4px);
+  background-color: rgba(255, 255, 255, 0.06);
 }
