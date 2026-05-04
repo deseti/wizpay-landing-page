@@ -146,6 +146,7 @@ function Home() {
             <a href="#what" className="transition hover:text-white">What It Does</a>
             <a href="#how-it-works" className="transition hover:text-white">How It Works</a>
             <a href="#capabilities" className="transition hover:text-white">Capabilities</a>
+            <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="transition hover:text-white flex items-center gap-1">Docs <span className="text-[10px] opacity-70">↗</span></a>
           </nav>
 
           <a
@@ -179,7 +180,7 @@ function Home() {
               <a
                 href={APP_URL}
                 id="cta-hero-primary"
-                className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 shadow-[0_20px_60px_rgba(255,255,255,0.12)] transition hover:-translate-y-0.5 hover:bg-slate-100"
+                className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-6 py-3.5 text-sm font-bold text-slate-950 shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-cyan-300 hover:shadow-[0_0_50px_rgba(34,211,238,0.5)]"
               >
                 Start Moving Money →
               </a>
@@ -480,26 +481,57 @@ function Home() {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-white/8 bg-[#050816]/80 backdrop-blur-xl">
-        <div className="section-shell flex flex-col items-center gap-6 py-8 sm:flex-row sm:justify-between">
-          <div className="flex items-center gap-3">
-            <img src="/favicon.ico" alt="WizPay" width="20" height="20" className="rounded-md" />
-            <p className="text-sm text-slate-400">
-              © 2026 WizPay. On-chain payment execution.
-            </p>
-          </div>
+      <footer className="border-t border-white/10 bg-[#030510]/80 backdrop-blur-2xl">
+        <div className="section-shell py-12 md:py-16">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            <div className="space-y-4 lg:col-span-2">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 shadow-[0_0_20px_rgba(34,211,238,0.1)]">
+                  <img src="/favicon.ico" alt="WizPay Logo" width="20" height="20" className="rounded-md" />
+                </div>
+                <div>
+                  <p className="font-display text-lg font-semibold tracking-tight text-white">WizPay</p>
+                  <p className="text-xs text-slate-400">On-chain payment execution</p>
+                </div>
+              </div>
+              <p className="max-w-xs text-sm leading-6 text-slate-400">
+                Batch your payments, execute once, and settle on-chain across Ethereum, Solana, and Arc.
+              </p>
+              <div className="pt-2">
+                <a href="mailto:connect@wizpay.xyz" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white">
+                  <span>✉️</span> connect@wizpay.xyz
+                </a>
+              </div>
+            </div>
 
-          <nav className="flex items-center gap-6" aria-label="Footer navigation">
-            <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-400 transition hover:text-white">
-              Docs
-            </a>
-            <a href={SOCIAL_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-400 transition hover:text-white">
-              Twitter / X
-            </a>
-            <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-400 transition hover:text-white">
-              Discord
-            </a>
-          </nav>
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Product</h4>
+              <ul className="space-y-3 text-sm text-slate-400">
+                <li><a href={APP_URL} className="transition hover:text-white">Open App</a></li>
+                <li><a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Documentation</a></li>
+                <li><a href="#how-it-works" className="transition hover:text-white">How it Works</a></li>
+                <li><a href="#capabilities" className="transition hover:text-white">Capabilities</a></li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Connect</h4>
+              <ul className="space-y-3 text-sm text-slate-400">
+                <li><a href={SOCIAL_URL} target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Twitter / X</a></li>
+                <li><a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Discord</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
+            <p className="text-sm text-slate-500">
+              © 2026 WizPay. All rights reserved.
+            </p>
+            <div className="flex gap-4 text-sm text-slate-500">
+              <a href="#" className="transition hover:text-white">Privacy Policy</a>
+              <a href="#" className="transition hover:text-white">Terms of Service</a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
