@@ -1,6 +1,6 @@
 # WizPay — Comprehensive Codebase Analysis
 
-> **Tanggal Analisis:** 3 Mei 2026  
+> **Analysis Date:** May 3, 2026  
 > **Repo:** `wizpay-core` (monorepo)  
 > **Stack:** NestJS · Next.js · Solidity (Foundry) · PostgreSQL · Redis/BullMQ · Circle APIs · Docker
 
@@ -8,7 +8,7 @@
 
 ## 1. Executive Summary
 
-WizPay adalah platform **Web3 payroll & payment router** yang memungkinkan perusahaan melakukan pembayaran gaji karyawan secara batch menggunakan stablecoin (USDC/EURC) di multi-chain (Arc Testnet, Ethereum Sepolia, Solana Devnet). Sistem ini mengintegrasikan **Circle Programmable Wallets**, **CCTP V2 cross-chain bridge**, **StableFX** untuk forex stablecoin, dan **smart contract on-chain** untuk atomic cross-token payment routing.
+WizPay is a **Web3 payroll & payment router platform** that enables companies to make batch employee salary payments using stablecoins (USDC/EURC) across multiple chains (Arc Testnet, Ethereum Sepolia, Solana Devnet). It supports dual wallet modes (W3S & Passkey), cross-chain bridging via Circle CCTP V2, and stablecoin FX swaps via Circle StableFX API. The platform is non-custodial: the smart contract never holds user funds—users approve tokens, the contract pulls them, executes swaps, and routes to recipients.
 
 ---
 
@@ -75,19 +75,19 @@ wizpay-core/
 ```
 
 > [!IMPORTANT]
-> **Tipe Repo:** Monorepo menggunakan **npm workspaces** (`"workspaces": ["apps/*", "packages/*"]`). Bukan turborepo/nx — hanya native npm workspaces.
+> **Repo Type:** Monorepo using **npm workspaces** (`"workspaces": ["apps/*", "packages/*"]`). Not turborepo/nx — only native npm workspaces.
 
 ---
 
-## 3. Modularitas Assessment
+## 3. Modularity Assessment
 
 ### ✅ Backend — Highly Modular (NestJS Module Pattern)
 
-Root `AppModule` mengimpor **10 sub-module** yang masing-masing self-contained:
+Root `AppModule` imports **10 sub-modules** that are each self-contained:
 
 | Module | File Count | Responsibility |
 |--------|-----------|----------------|
-| `AppConfigModule` | 3 | Env validation, configuration |
+| `AppConfigModule` | 3 | Environment validation, configuration |
 | `DatabaseModule` | 3 | Prisma client, schema, migrations |
 | `AdaptersModule` | 8 | Circle API, blockchain RPC, DEX, Solana |
 | `AgentsModule` | 11 | Payroll, Bridge, Swap, FX, Liquidity agents |
@@ -100,7 +100,7 @@ Root `AppModule` mengimpor **10 sub-module** yang masing-masing self-contained:
 
 ### ✅ Frontend — Component-Based (Next.js App Router)
 
-Organisasi modular dengan separation of concerns:
+Modular organization with clear separation of concerns:
 - **`app/`** — Route pages (dashboard, bridge, swap, send, liquidity, assets)
 - **`components/dashboard/`** — Feature components (30+ files)
 - **`components/providers/`** — Context providers (Circle, Hybrid, API proxy)
@@ -211,18 +211,18 @@ graph TB
 
 ---
 
-## 5. Business Design & Konsep
+## 5. Business Design & Concept
 
 ### 5.1 Core Value Proposition
 
-WizPay menyelesaikan masalah **pembayaran gaji crypto** dengan fitur:
+WizPay solves the **crypto payroll problem** with:
 
-1. **Batch Payroll** — Bayar banyak karyawan dalam 1 transaksi atomik
-2. **Cross-Token Payment** — Bayar dengan USDC, karyawan terima EURC (atau sebaliknya)
+1. **Batch Payroll** — Pay many employees in a single atomic transaction
+2. **Cross-Token Payment** — Pay with USDC, employees receive EURC (or vice versa)
 3. **Multi-Chain** — Arc Testnet, Ethereum Sepolia, Solana Devnet
-4. **Cross-Chain Bridge** — Transfer USDC antar chain via Circle CCTP V2
-5. **StableFX** — Forex stablecoin (USDC ↔ EURC) via Circle StableFX API
-6. **Non-Custodial** — Smart contract tidak menyimpan dana user
+4. **Cross-Chain Bridge** — Transfer USDC across chains via Circle CCTP V2
+5. **StableFX** — Stablecoin forex (USDC ↔ EURC) via Circle StableFX API
+6. **Non-Custodial** — Smart contract never holds user funds
 
 ### 5.2 User Personas & Wallet Modes
 
@@ -615,19 +615,19 @@ flowchart TD
 
 ---
 
-## 16. Temuan & Catatan Penting
+## 16. Key Findings & Important Notes
 
 > [!NOTE]
-> **Monorepo tanpa Build Orchestrator** — Menggunakan npm workspaces sederhana tanpa Turborepo/Nx. Cukup untuk skala saat ini tapi scaling ke banyak packages akan butuh build caching.
+> **Monorepo Without Build Orchestrator** — Uses simple npm workspaces without Turborepo/Nx. Sufficient for current scale, but scaling to many packages will require build caching.
 
 > [!WARNING]
-> **Solana Passkey Limitation** — Passkey AA wallets hanya EVM. Solana payroll mengembalikan unsigned intents yang harus di-sign client-side.
+> **Solana Passkey Limitation** — Passkey AA wallets are EVM only. Solana payroll returns unsigned intents that must be signed client-side.
 
 > [!IMPORTANT]
-> **Dual Circle Integration** — Backend punya DUA Circle client path: `CircleService` (developer-controlled wallets SDK) dan `CircleAdapter/CircleClient` (treasury management). Perlu hati-hati agar tidak duplikasi.
+> **Dual Circle Integration** — Backend has TWO Circle client paths: `CircleService` (developer-controlled wallets SDK) and `CircleAdapter/CircleClient` (treasury management). Care must be taken to avoid duplication.
 
 > [!TIP]
-> **Smart Contract Non-Custodial** — WizPay.sol menggunakan `transferFrom` pattern — user approve dulu, contract pull token, swap via FXEngine, kirim ke recipient. Tidak menyimpan dana.
+> **Smart Contract Non-Custodial** — WizPay.sol uses the `transferFrom` pattern — user approves first, contract pulls token, swaps via FXEngine, sends to recipient. Never holds funds.
 
 ---
 
