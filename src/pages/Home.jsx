@@ -1,7 +1,6 @@
 const APP_URL = 'https://app.wizpay.xyz'
 const SOCIAL_URL = 'https://x.com/wizpay_arc'
 const DOCS_URL = 'https://docs.wizpay.xyz'
-const DISCORD_URL = 'https://discord.gg/wizpay'
 const GITHUB_URL = 'https://github.com/deseti/wizpay-core'
 
 function GitHubIcon({ size = 18 }) {
@@ -528,7 +527,6 @@ function Home() {
               <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Connect</h4>
               <ul className="space-y-3 text-sm text-slate-400">
                 <li><a href={SOCIAL_URL} target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Twitter / X</a></li>
-                <li><a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Discord</a></li>
                 <li><a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 transition hover:text-white"><GitHubIcon size={14} /> GitHub</a></li>
               </ul>
             </div>
