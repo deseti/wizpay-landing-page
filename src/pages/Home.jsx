@@ -1,7 +1,6 @@
 const APP_URL = 'https://app.wizpay.xyz'
 const SOCIAL_URL = 'https://x.com/wizpay_arc'
 const DOCS_URL = 'https://docs.wizpay.xyz'
-const DISCORD_URL = 'https://discord.gg/wizpay'
 const GITHUB_URL = 'https://github.com/deseti/wizpay-core'
 
 function GitHubIcon({ size = 18 }) {
