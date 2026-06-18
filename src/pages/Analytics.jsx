@@ -1,0 +1,628 @@
+const LINKS = {
+  app: 'https://app.wizpay.xyz',
+  docs: 'https://docs.wizpay.xyz',
+  githubCore: 'https://github.com/deseti/wizpay-core',
+  githubNano: 'https://github.com/deseti/nano-wizpay',
+  x: 'https://x.com/wizpay_arc',
+  arcscan:
+    'https://testnet.arcscan.app/address/0x87ACE45582f45cC81AC1E627E875AE84cbd75946',
+  api: 'https://api.wizpay.xyz',
+}
+
+const CONTRACT_ADDRESS = '0x87ACE45582f45cC81AC1E627E875AE84cbd75946'
+
+const METRICS = [
+  { label: 'Transactions', value: '18,681', tone: 'cyan' },
+  { label: 'Token transfers', value: '153,071', tone: 'cyan' },
+  { label: 'Contract verified', value: 'Yes', tone: 'emerald' },
+  { label: 'Network', value: 'Arc Testnet', tone: 'cyan' },
+]
+
+const PRODUCTS = [
+  {
+    name: 'WizPay Core',
+    description:
+      'Institutional-grade task execution engine for batched USDC payroll, Circle orchestration, and Arc settlement.',
+    tone: 'cyan',
+  },
+  {
+    name: 'WizPay Nano',
+    description:
+      'Non-custodial paid orchestration API for autonomous agents. Agents request quotes or plans, pay a USDC service fee, and receive calldata or Circle CLI commands.',
+    tone: 'emerald',
+  },
+  {
+    name: 'WizPay App',
+    description:
+      'Operator-facing payment interface for wallet-based stablecoin payment execution.',
+    tone: 'sky',
+  },
+]
+
+const ENDPOINTS = [
+  { method: 'GET', path: '/services', access: 'Public' },
+  { method: 'GET', path: '/contracts/status', access: 'Public' },
+  { method: 'POST', path: '/swap/quote', access: 'Public' },
+  { method: 'POST', path: '/payroll/plan', access: 'Public' },
+  { method: 'POST', path: '/swap/prepare', access: 'Payment proof required' },
+  { method: 'POST', path: '/payroll/prepare', access: 'Payment proof required' },
+]
+
+const SWAP_PROOFS = [
+  {
+    label: 'Service fee',
+    href: 'https://testnet.arcscan.app/tx/0x58632caae2d2a13724c6e85c5d31ecce548eca0328f8d97946402b468f358897',
+  },
+  {
+    label: 'Approve',
+    href: 'https://testnet.arcscan.app/tx/0xc19400a869f2b78a16b468b3432fd3f9b9fff1302e68530f7261dde69d56c3a3',
+  },
+  {
+    label: 'executeSwap',
+    href: 'https://testnet.arcscan.app/tx/0xaa58ede3ce79805c229ab1885efdb480f0addd5137e73dc43213b28a9a0a5e5d',
+  },
+]
+
+const PAYROLL_PROOFS = [
+  {
+    label: 'Service fee',
+    href: 'https://testnet.arcscan.app/tx/0xbe95a87f42e16bb3c59ffa295ca3c99f2ed5ac136fe199283a0fecd365a63655',
+  },
+  {
+    label: 'Approve',
+    href: 'https://testnet.arcscan.app/tx/0x3899f11e353738a7cc6301b14a44ee0e508cc8bda3b2e18a806a1e5997a4cde3',
+  },
+  {
+    label: 'Payout 1',
+    href: 'https://testnet.arcscan.app/tx/0x02eef1a5f53fc24d1f935d35ee427e1c66a3c3dfe7cb7068ca625004bdc3366e',
+  },
+  {
+    label: 'Payout 2',
+    href: 'https://testnet.arcscan.app/tx/0xe93ba7285bbf83f917dfc4bbacfa04878a02086404f1cc88c6c40ff6e4e24222',
+  },
+  {
+    label: 'Payout 3',
+    href: 'https://testnet.arcscan.app/tx/0x44b462fbb251e0d65e0123efde2aae6bcbd2b80b52129f58846d501f21b2a96a',
+  },
+  {
+    label: 'Payout 4',
+    href: 'https://testnet.arcscan.app/tx/0x1ae880b08928c9cc6a290c14340dd035c104da41bd07929a7014df5773b436aa',
+  },
+  {
+    label: 'Payout 5',
+    href: 'https://testnet.arcscan.app/tx/0xdfb50aaabcf0d5419426e275fb8a9bf33198e2cfc50530ce0df6af8a5c0adde2',
+  },
+]
+
+const CIRCLE_ITEMS = [
+  { title: 'USDC settlement on Arc Testnet', status: 'Integrated' },
+  {
+    title: 'Circle CLI wallet executor used for verified Nano WizPay proofs',
+    status: 'Integrated',
+  },
+  {
+    title: 'Circle Programmable Wallets integration path in WizPay Core',
+    status: 'Integration path',
+  },
+  { title: 'Gas Station for sponsored agent transactions', status: 'Planned' },
+  { title: 'CCTP for cross-chain agent payroll settlement', status: 'Planned' },
+]
+
+function ExternalIcon({ size = 16 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M15 4h5v5" />
+      <path d="m20 4-9 9" />
+      <path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5" />
+    </svg>
+  )
+}
+
+function CheckIcon({ size = 18 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m5 12 4 4L19 6" />
+    </svg>
+  )
+}
+
+function TraceIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 7h11" />
+      <path d="m13 4 3 3-3 3" />
+      <path d="M19 17H8" />
+      <path d="m11 14-3 3 3 3" />
+    </svg>
+  )
+}
+
+function ExternalLink({ href, className = '', children, label }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className={className}
+    >
+      {children}
+    </a>
+  )
+}
+
+function SectionHeader({ title, description }) {
+  return (
+    <div className="max-w-3xl">
+      <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        {title}
+      </h2>
+      {description && (
+        <p className="mt-3 text-sm leading-7 text-slate-400 sm:text-base">{description}</p>
+      )}
+    </div>
+  )
+}
+
+function ProofPanel({ title, subtitle, facts, items }) {
+  return (
+    <article className="surface-card overflow-hidden rounded-[28px]">
+      <div className="border-b border-white/8 px-5 py-5 sm:px-6">
+        <div className="flex items-start gap-4">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/8 text-cyan-300">
+            <TraceIcon />
+          </span>
+          <div>
+            <h3 className="font-display text-xl font-semibold text-white">{title}</h3>
+            <p className="mt-1 text-sm text-slate-400">{subtitle}</p>
+          </div>
+        </div>
+        {facts && (
+          <div className="mt-5 grid gap-2 sm:grid-cols-3">
+            {facts.map((fact) => (
+              <div
+                key={fact}
+                className="rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2 text-xs leading-5 text-slate-300"
+              >
+                {fact}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="px-5 py-2 sm:px-6">
+        {items.map((item, index) => (
+          <ExternalLink
+            key={item.href}
+            href={item.href}
+            label={`View ${item.label} transaction on Arcscan`}
+            className="group flex items-center gap-4 border-b border-white/7 py-3.5 last:border-b-0"
+          >
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-emerald-300/25 bg-emerald-300/10 text-emerald-300">
+              <CheckIcon size={14} />
+            </span>
+            <span className="w-5 text-xs tabular-nums text-slate-500">{index + 1}</span>
+            <span className="flex-1 text-sm font-medium text-slate-200 transition group-hover:text-white">
+              {item.label}
+            </span>
+            <span className="hidden font-mono text-[11px] text-cyan-300/70 sm:block">
+              {item.href.slice(-12)}
+            </span>
+            <span className="text-slate-500 transition group-hover:text-cyan-300">
+              <ExternalIcon size={15} />
+            </span>
+          </ExternalLink>
+        ))}
+      </div>
+    </article>
+  )
+}
+
+function Analytics() {
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-[#030510]">
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="soft-grid absolute inset-x-0 top-0 h-[58rem] opacity-45" />
+        <div className="absolute -left-40 top-56 h-80 w-80 rounded-full bg-cyan-400/10 blur-[150px]" />
+        <div className="absolute -right-32 top-[32rem] h-80 w-80 rounded-full bg-emerald-400/8 blur-[150px]" />
+      </div>
+
+      <header className="sticky top-0 z-40 border-b border-white/8 bg-[#030510]/82 backdrop-blur-xl">
+        <div className="section-shell flex min-h-18 items-center justify-between gap-5 py-3">
+          <a href="/" className="flex items-center gap-3" aria-label="WizPay home">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 shadow-[0_0_28px_rgba(34,211,238,0.13)]">
+              <img src="/favicon.ico" alt="" width="21" height="21" className="rounded-md" />
+            </span>
+            <span>
+              <span className="block font-display text-base font-semibold text-white">WizPay</span>
+              <span className="block text-[11px] text-slate-500">Public analytics</span>
+            </span>
+          </a>
+
+          <nav className="hidden items-center gap-6 text-sm text-slate-400 lg:flex">
+            <a href="#overview" className="text-cyan-300 transition hover:text-cyan-200">
+              Analytics
+            </a>
+            <ExternalLink href={LINKS.docs} className="transition hover:text-white">
+              Docs
+            </ExternalLink>
+            <ExternalLink href={LINKS.githubCore} className="transition hover:text-white">
+              GitHub
+            </ExternalLink>
+            <ExternalLink href={LINKS.x} className="transition hover:text-white">
+              X
+            </ExternalLink>
+          </nav>
+
+          <ExternalLink
+            href={LINKS.app}
+            className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2.5 text-sm font-semibold text-cyan-100 transition hover:-translate-y-0.5 hover:bg-cyan-300/16"
+          >
+            Open App
+            <ExternalIcon size={14} />
+          </ExternalLink>
+        </div>
+      </header>
+
+      <main>
+        <section
+          id="overview"
+          className="section-shell grid gap-8 pb-10 pt-12 sm:pt-16 lg:grid-cols-[minmax(0,0.95fr)_minmax(440px,1.05fr)] lg:items-center lg:gap-12 lg:pt-22"
+        >
+          <div className="animate-rise">
+            <h1 className="font-display max-w-3xl text-5xl font-bold tracking-[-0.045em] text-white sm:text-6xl lg:text-7xl lg:leading-[0.98]">
+              WizPay Public Analytics
+            </h1>
+            <p className="mt-7 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+              WizPay is an Arc-native payment execution and orchestration layer for autonomous
+              AI agents, enabling USDC/EURC payroll, swap preparation, service-fee-gated
+              execution plans, and non-custodial on-chain settlement using Circle-based wallet
+              tooling.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:gap-8">
+              <span className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
+                Public on-chain activity snapshot
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.7)]" />
+                Snapshot from Arcscan public explorer
+              </span>
+            </div>
+          </div>
+
+          <article className="animate-rise delay-1 surface-card rounded-[28px] p-5 sm:p-7">
+            <div className="flex items-center justify-between gap-4 border-b border-white/8 pb-5">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  Primary contract
+                </p>
+                <h2 className="mt-2 font-display text-2xl font-semibold text-white">
+                  WizPay Payroll Router
+                </h2>
+              </div>
+              <span className="flex items-center gap-2 text-sm font-semibold text-emerald-300">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-emerald-300/30 bg-emerald-300/10">
+                  <CheckIcon size={15} />
+                </span>
+                Verified
+              </span>
+            </div>
+
+            <dl className="divide-y divide-white/8">
+              <div className="grid gap-2 py-5 sm:grid-cols-[130px_1fr] sm:items-center">
+                <dt className="text-sm text-slate-500">Network</dt>
+                <dd className="text-sm font-medium text-cyan-300 sm:text-right">Arc Testnet</dd>
+              </div>
+              <div className="grid gap-2 py-5 sm:grid-cols-[130px_1fr]">
+                <dt className="text-sm text-slate-500">Address</dt>
+                <dd className="break-all font-mono text-xs leading-6 text-slate-200 sm:text-right">
+                  {CONTRACT_ADDRESS}
+                </dd>
+              </div>
+              <div className="grid gap-2 pt-5 sm:grid-cols-[130px_1fr] sm:items-center">
+                <dt className="text-sm text-slate-500">Explorer</dt>
+                <dd className="sm:text-right">
+                  <ExternalLink
+                    href={LINKS.arcscan}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 transition hover:text-cyan-200"
+                  >
+                    View on Arcscan
+                    <ExternalIcon size={14} />
+                  </ExternalLink>
+                </dd>
+              </div>
+            </dl>
+          </article>
+        </section>
+
+        <section className="section-shell pb-20 sm:pb-24">
+          <div className="surface-card grid overflow-hidden rounded-[28px] sm:grid-cols-2 lg:grid-cols-4">
+            {METRICS.map((metric, index) => (
+              <article
+                key={metric.label}
+                className={`relative px-5 py-6 sm:px-6 lg:py-7 ${
+                  index < METRICS.length - 1 ? 'border-b border-white/8 sm:border-r lg:border-b-0' : ''
+                } ${index === 1 ? 'sm:border-r-0 lg:border-r' : ''}`}
+              >
+                <div className="flex items-center gap-3 text-slate-400">
+                  <span
+                    className={`flex h-9 w-9 items-center justify-center rounded-xl border ${
+                      metric.tone === 'emerald'
+                        ? 'border-emerald-300/20 bg-emerald-300/8 text-emerald-300'
+                        : 'border-cyan-300/20 bg-cyan-300/8 text-cyan-300'
+                    }`}
+                  >
+                    {metric.tone === 'emerald' ? <CheckIcon size={17} /> : <TraceIcon />}
+                  </span>
+                  <span className="text-sm">{metric.label}</span>
+                </div>
+                <p
+                  className={`mt-6 font-display text-3xl font-semibold tracking-tight sm:text-4xl ${
+                    metric.tone === 'emerald' ? 'text-emerald-300' : 'text-white'
+                  }`}
+                >
+                  {metric.value}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="section-shell pb-20 sm:pb-24">
+          <SectionHeader
+            title="Product and API coverage"
+            description="The public surface spans execution infrastructure, paid agent orchestration, and an operator-facing application."
+          />
+
+          <div className="mt-8 divide-y divide-white/8 overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.025]">
+            {PRODUCTS.map((product, index) => (
+              <article
+                key={product.name}
+                className="group grid gap-5 px-5 py-6 transition hover:bg-white/[0.025] sm:px-7 lg:grid-cols-[250px_1fr] lg:items-center"
+              >
+                <div className="flex items-center gap-5">
+                  <span
+                    className={`h-px w-10 ${
+                      product.tone === 'emerald'
+                        ? 'bg-emerald-300'
+                        : product.tone === 'sky'
+                          ? 'bg-sky-300'
+                          : 'bg-cyan-300'
+                    }`}
+                  />
+                  <div>
+                    <span className="text-xs tabular-nums text-slate-600">0{index + 1}</span>
+                    <h3 className="mt-1 font-display text-xl font-semibold text-white">
+                      {product.name}
+                    </h3>
+                  </div>
+                </div>
+                <p className="max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">
+                  {product.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="section-shell pb-20 sm:pb-24">
+          <div className="surface-card overflow-hidden rounded-[28px]">
+            <div className="flex flex-col gap-5 border-b border-white/8 px-5 py-6 sm:flex-row sm:items-end sm:justify-between sm:px-7">
+              <SectionHeader
+                title="Public API endpoints"
+                description="Published interfaces for service discovery, planning, and paid execution preparation."
+              />
+              <ExternalLink
+                href={LINKS.api}
+                className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-cyan-300/20 bg-cyan-300/7 px-4 py-3 font-mono text-sm text-cyan-300 transition hover:bg-cyan-300/12"
+              >
+                api.wizpay.xyz
+                <ExternalIcon size={14} />
+              </ExternalLink>
+            </div>
+
+            <div className="overflow-x-auto px-5 sm:px-7">
+              <table className="w-full min-w-[680px] border-collapse text-left">
+                <thead>
+                  <tr className="border-b border-white/8 text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                    <th className="py-4 pr-5 font-semibold">Method</th>
+                    <th className="py-4 pr-5 font-semibold">Endpoint</th>
+                    <th className="py-4 font-semibold">Access</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ENDPOINTS.map((endpoint) => (
+                    <tr key={endpoint.path} className="border-b border-white/7 last:border-b-0">
+                      <td className="py-4 pr-5">
+                        <span
+                          className={`inline-flex min-w-15 justify-center rounded-lg border px-2.5 py-1 font-mono text-xs ${
+                            endpoint.method === 'GET'
+                              ? 'border-cyan-300/25 bg-cyan-300/7 text-cyan-300'
+                              : 'border-emerald-300/25 bg-emerald-300/7 text-emerald-300'
+                          }`}
+                        >
+                          {endpoint.method}
+                        </span>
+                      </td>
+                      <td className="py-4 pr-5 font-mono text-sm text-slate-100">{endpoint.path}</td>
+                      <td className="py-4 text-sm text-slate-400">{endpoint.access}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="m-5 rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.045] px-4 py-4 text-sm leading-6 text-slate-300 sm:m-7">
+              Read-only endpoints are publicly accessible. Paid prepare endpoints require a USDC
+              payment proof before executable plans are returned.
+            </div>
+          </div>
+        </section>
+
+        <section className="section-shell pb-20 sm:pb-24">
+          <SectionHeader
+            title="Verified execution proofs"
+            description="Direct Arcscan traces for completed swap and payroll execution flows on Arc Testnet."
+          />
+
+          <div className="mt-8 grid gap-5 lg:grid-cols-2 lg:items-start">
+            <ProofPanel
+              title="Swap proof"
+              subtitle="5 USDC to EURC swap"
+              items={SWAP_PROOFS}
+            />
+            <ProofPanel
+              title="Payroll proof"
+              subtitle="5-recipient payroll"
+              facts={[
+                '3 direct USDC payouts',
+                '2 USDC to EURC routed payouts',
+                'Service-fee-gated prepare flow',
+              ]}
+              items={PAYROLL_PROOFS}
+            />
+          </div>
+        </section>
+
+        <section className="section-shell pb-20 sm:pb-24">
+          <div className="grid gap-5 lg:grid-cols-[1.12fr_0.88fr]">
+            <article className="surface-card rounded-[28px] p-5 sm:p-7">
+              <SectionHeader
+                title="Circle integration"
+                description="Current integration evidence and clearly separated forward-looking work."
+              />
+              <div className="mt-7 divide-y divide-white/8">
+                {CIRCLE_ITEMS.map((item) => (
+                  <div key={item.title} className="flex items-start gap-4 py-4 first:pt-0">
+                    <span
+                      className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border ${
+                        item.status === 'Planned'
+                          ? 'border-slate-600 bg-white/[0.025] text-slate-500'
+                          : 'border-emerald-300/25 bg-emerald-300/8 text-emerald-300'
+                      }`}
+                    >
+                      <CheckIcon size={14} />
+                    </span>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium leading-6 text-slate-200">{item.title}</p>
+                      <p className="mt-1 text-xs uppercase tracking-[0.15em] text-slate-500">
+                        {item.status}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="surface-card rounded-[28px] p-5 sm:p-7">
+              <SectionHeader
+                title="Data sources"
+                description="Public and reproducible sources used for this snapshot."
+              />
+              <div className="mt-7 space-y-3">
+                {[
+                  ['Arcscan public explorer', LINKS.arcscan],
+                  ['WizPay public API', LINKS.api],
+                  ['WizPay GitHub proof docs', LINKS.githubNano],
+                  ['WizPay deployed contracts', LINKS.githubCore],
+                ].map(([label, href]) => (
+                  <ExternalLink
+                    key={label}
+                    href={href}
+                    className="group flex items-center justify-between gap-4 rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-4 text-sm text-slate-300 transition hover:border-cyan-300/20 hover:bg-cyan-300/[0.035] hover:text-white"
+                  >
+                    <span>{label}</span>
+                    <span className="text-slate-600 transition group-hover:text-cyan-300">
+                      <ExternalIcon size={15} />
+                    </span>
+                  </ExternalLink>
+                ))}
+              </div>
+            </article>
+          </div>
+
+          <div className="mt-5 rounded-[24px] border border-white/9 bg-white/[0.025] px-5 py-5 sm:px-7">
+            <p className="text-sm leading-7 text-slate-300">
+              Analytics are sourced from Arcscan public explorer data, WizPay public API
+              endpoints, and verified WizPay execution proofs.
+            </p>
+            <p className="mt-2 text-xs leading-6 text-slate-500">
+              Dune Arc schema was tested, but current WizPay contract activity is more completely
+              reflected through Arcscan.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-white/8 bg-[#030510]/82">
+        <div className="section-shell py-10">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                <img src="/favicon.ico" alt="" width="20" height="20" className="rounded-md" />
+              </span>
+              <div>
+                <p className="font-display font-semibold text-white">WizPay</p>
+                <p className="text-xs text-slate-500">Arc-native payment execution</p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-x-5 gap-y-3 text-sm text-slate-400">
+              {[
+                ['App', LINKS.app],
+                ['Docs', LINKS.docs],
+                ['GitHub Core', LINKS.githubCore],
+                ['GitHub Nano', LINKS.githubNano],
+                ['X', LINKS.x],
+                ['Arcscan', LINKS.arcscan],
+                ['API', LINKS.api],
+              ].map(([label, href]) => (
+                <ExternalLink key={label} href={href} className="transition hover:text-cyan-300">
+                  {label}
+                </ExternalLink>
+              ))}
+            </div>
+          </div>
+          <p className="mt-8 border-t border-white/8 pt-6 text-xs text-slate-600">
+            Static public activity snapshot for WizPay on Arc Testnet.
+          </p>
+        </div>
+      </footer>
+    </div>
+  )
+}
+
+export default Analytics
