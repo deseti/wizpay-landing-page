@@ -39,6 +39,31 @@ const VERIFIED_USAGE_METRICS = [
   },
 ]
 
+const ARCSCAN_METRICS = [
+  {
+    label: 'Explorer Transactions',
+    value: '18,681',
+    detail: 'Public transaction count from Arcscan',
+    href: LINKS.arcscan,
+  },
+  {
+    label: 'Token Transfers',
+    value: '153,071',
+    detail: 'Public token transfer count from Arcscan',
+    href: LINKS.arcscan,
+  },
+  {
+    label: 'Contract Status',
+    value: 'Verified',
+    detail: 'Primary WizPay Payroll Router contract',
+  },
+  {
+    label: 'Network',
+    value: 'Arc Testnet',
+    detail: 'Public Arc Testnet deployment',
+  },
+]
+
 const PRODUCTS = [
   {
     name: 'WizPay Core',
@@ -270,6 +295,54 @@ function ProofPanel({ title, subtitle, facts, items }) {
   )
 }
 
+function ArcscanMetricCard({ metric, index }) {
+  const content = (
+    <>
+      <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+        <span
+          className={`h-1.5 w-1.5 rounded-full ${
+            index === 2 ? 'bg-emerald-300' : 'bg-cyan-300'
+          }`}
+        />
+        {metric.label}
+        {metric.href && (
+          <span className="ml-auto text-slate-600 transition group-hover:text-cyan-300">
+            <ExternalIcon size={14} />
+          </span>
+        )}
+      </div>
+      <p
+        className={`mt-4 font-display text-2xl font-semibold tracking-tight ${
+          index === 2 ? 'text-emerald-300' : 'text-slate-100'
+        }`}
+      >
+        {metric.value}
+      </p>
+      <p className="mt-2 text-xs leading-5 text-slate-500">{metric.detail}</p>
+    </>
+  )
+
+  const className = `rounded-2xl border bg-[#060a18]/55 px-5 py-5 ${
+    metric.href
+      ? 'group border-white/8 transition hover:-translate-y-0.5 hover:border-cyan-300/25 hover:bg-cyan-300/[0.045]'
+      : 'border-white/8'
+  }`
+
+  if (metric.href) {
+    return (
+      <ExternalLink
+        href={metric.href}
+        label={`View ${metric.label} for the WizPay Payroll Router on Arcscan`}
+        className={className}
+      >
+        {content}
+      </ExternalLink>
+    )
+  }
+
+  return <article className={className}>{content}</article>
+}
+
 function Analytics() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#030510]">
@@ -436,6 +509,19 @@ function Analytics() {
               Arc Testnet blocks. USDC and EURC are treated as approximate USD-denominated
               stablecoin volume.
             </p>
+          </div>
+        </section>
+
+        <section className="section-shell pb-20 sm:pb-24">
+          <SectionHeader
+            title="Arcscan Snapshot"
+            description="Explorer-level public activity indicators for the primary WizPay Payroll Router contract on Arc Testnet."
+          />
+
+          <div className="mt-7 grid gap-3 overflow-hidden rounded-[24px] border border-white/9 bg-white/[0.02] p-3 sm:grid-cols-2 lg:grid-cols-4">
+            {ARCSCAN_METRICS.map((metric, index) => (
+              <ArcscanMetricCard key={metric.label} metric={metric} index={index} />
+            ))}
           </div>
         </section>
 
