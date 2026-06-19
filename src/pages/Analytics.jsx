@@ -11,11 +11,32 @@ const LINKS = {
 
 const CONTRACT_ADDRESS = '0x87ACE45582f45cC81AC1E627E875AE84cbd75946'
 
-const METRICS = [
-  { label: 'Transactions', value: '18,681', tone: 'cyan' },
-  { label: 'Token transfers', value: '153,071', tone: 'cyan' },
-  { label: 'Contract verified', value: 'Yes', tone: 'emerald' },
-  { label: 'Network', value: 'Arc Testnet', tone: 'cyan' },
+const VERIFIED_USAGE_METRICS = [
+  {
+    label: 'Verified Stablecoin Payment Volume',
+    value: '$475.5K+',
+    detail: 'Measured from PaymentRouted contract events',
+  },
+  {
+    label: 'Active Unique Participants',
+    value: '3,396',
+    detail: 'Deduplicated sender + recipient addresses',
+  },
+  {
+    label: 'Payment Events',
+    value: '17,455',
+    detail: 'PaymentRouted contract events',
+  },
+  {
+    label: 'Routed Batch Recipients',
+    value: '15,956',
+    detail: 'Reported from BatchPaymentRouted recipientCount',
+  },
+  {
+    label: 'Batch Executions',
+    value: '5,216',
+    detail: 'BatchPaymentRouted contract events',
+  },
 ]
 
 const PRODUCTS = [
@@ -368,36 +389,53 @@ function Analytics() {
           </article>
         </section>
 
-        <section className="section-shell pb-20 sm:pb-24">
-          <div className="surface-card grid overflow-hidden rounded-[28px] sm:grid-cols-2 lg:grid-cols-4">
-            {METRICS.map((metric, index) => (
-              <article
-                key={metric.label}
-                className={`relative px-5 py-6 sm:px-6 lg:py-7 ${
-                  index < METRICS.length - 1 ? 'border-b border-white/8 sm:border-r lg:border-b-0' : ''
-                } ${index === 1 ? 'sm:border-r-0 lg:border-r' : ''}`}
+        <section className="section-shell pb-20 pt-4 sm:pb-24">
+          <div className="relative overflow-hidden rounded-[32px] border border-cyan-300/15 bg-gradient-to-br from-cyan-300/[0.07] via-white/[0.025] to-emerald-300/[0.04] p-5 shadow-[0_24px_80px_rgba(3,5,16,0.45)] sm:p-8 lg:p-10">
+            <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-cyan-300/10 blur-[100px]" />
+            <div className="relative">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
+                Recent Verified Usage
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Verified WizPay contract activity
+              </h2>
+              <p className="mt-4 max-w-4xl text-sm leading-7 text-slate-300 sm:text-base">
+                WizPay has processed nearly $0.5M in verified USDC/EURC stablecoin payment volume
+                across 17,455 on-chain payment events, with 3,396 active unique participants and
+                15,956 routed batch recipients over the latest 5,000,000 Arc Testnet blocks.
+              </p>
+            </div>
+
+            <div className="relative mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {VERIFIED_USAGE_METRICS.map((metric, index) => (
+                <article
+                  key={metric.label}
+                  className={`rounded-2xl border p-5 backdrop-blur-sm ${
+                    index === 0
+                      ? 'border-cyan-300/30 bg-cyan-300/[0.09] shadow-[0_0_32px_rgba(34,211,238,0.08)]'
+                      : 'border-white/9 bg-[#060a18]/65'
+                  }`}
               >
-                <div className="flex items-center gap-3 text-slate-400">
-                  <span
-                    className={`flex h-9 w-9 items-center justify-center rounded-xl border ${
-                      metric.tone === 'emerald'
-                        ? 'border-emerald-300/20 bg-emerald-300/8 text-emerald-300'
-                        : 'border-cyan-300/20 bg-cyan-300/8 text-cyan-300'
+                  <p
+                    className={`font-display text-3xl font-semibold tracking-tight sm:text-4xl ${
+                      index === 0 ? 'text-cyan-200' : 'text-white'
                     }`}
                   >
-                    {metric.tone === 'emerald' ? <CheckIcon size={17} /> : <TraceIcon />}
-                  </span>
-                  <span className="text-sm">{metric.label}</span>
-                </div>
-                <p
-                  className={`mt-6 font-display text-3xl font-semibold tracking-tight sm:text-4xl ${
-                    metric.tone === 'emerald' ? 'text-emerald-300' : 'text-white'
-                  }`}
-                >
-                  {metric.value}
-                </p>
-              </article>
-            ))}
+                    {metric.value}
+                  </p>
+                  <h3 className="mt-4 text-sm font-semibold leading-5 text-slate-100">
+                    {metric.label}
+                  </h3>
+                  <p className="mt-2 text-xs leading-5 text-slate-500">{metric.detail}</p>
+                </article>
+              ))}
+            </div>
+
+            <p className="relative mt-6 border-t border-white/8 pt-5 text-xs leading-6 text-slate-500 sm:text-sm">
+              Metrics are derived from verified WizPay contract events over the latest 5,000,000
+              Arc Testnet blocks. USDC and EURC are treated as approximate USD-denominated
+              stablecoin volume.
+            </p>
           </div>
         </section>
 
