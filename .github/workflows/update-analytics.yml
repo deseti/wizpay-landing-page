@@ -1,0 +1,37 @@
+name: Update Analytics
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-analytics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Update analytics JSON
+        env:
+          ARC_TESTNET_RPC_URL: ${{ secrets.ARC_TESTNET_RPC_URL }}
+        run: python3 scripts/update-analytics-live.py
+
+      - name: Commit analytics update
+        run: |
+          if git diff --quiet public/analytics-live.json; then
+            echo "No analytics changes."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/analytics-live.json
+          git commit -m "Update analytics live data"
+          git push

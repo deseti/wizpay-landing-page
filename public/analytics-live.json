@@ -1,0 +1,34 @@
+{
+  "updatedAt": "2026-06-24T12:02:33.339992+00:00",
+  "source": "arc-rpc",
+  "network": "Arc Testnet",
+  "contracts": {
+    "payrollRouter": {
+      "name": "WizPay Payroll Router",
+      "address": "0x87ACE45582f45cC81AC1E627E875AE84cbd75946",
+      "arcscanUrl": "https://testnet.arcscan.app/address/0x87ACE45582f45cC81AC1E627E875AE84cbd75946",
+      "transactions": 20011,
+      "transfers": 236288,
+      "paymentEvents": 0,
+      "batchEvents": 0
+    },
+    "swapExecutor": {
+      "name": "WizPaySwapExecutor",
+      "address": "0x17685466759f9Cde06f0DCbB5464164ABe541eFA",
+      "arcscanUrl": "https://testnet.arcscan.app/address/0x17685466759f9Cde06f0DCbB5464164ABe541eFA",
+      "transactions": 1528,
+      "transfers": 4588
+    }
+  },
+  "lastIndexedBlock": 48480358,
+  "latestBlock": 48480358,
+  "lastDelta": {
+    "fromBlock": 48480271,
+    "toBlock": 48480358,
+    "payrollRouter": {
+      "uniqueTransactions": 0,
+      "paymentEvents": 0,
+      "batchEvents": 0
+    }
+  }
+}

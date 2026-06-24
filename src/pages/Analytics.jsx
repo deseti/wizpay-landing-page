@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 const LINKS = {
   app: 'https://app.wizpay.xyz',
   docs: 'https://docs.wizpay.xyz',
@@ -10,6 +12,68 @@ const LINKS = {
 }
 
 const CONTRACT_ADDRESS = '0x87ACE45582f45cC81AC1E627E875AE84cbd75946'
+const SWAP_EXECUTOR_ADDRESS = '0x17685466759f9Cde06f0DCbB5464164ABe541eFA'
+
+const LIVE_ANALYTICS_URL = '/analytics-live.json'
+
+function formatNumber(value) {
+  if (value === null || value === undefined || value === '') return '—'
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return String(value)
+  return new Intl.NumberFormat('en-US').format(numeric)
+}
+
+function formatLiveUpdatedAt(value) {
+  if (!value) return 'Pending live refresh'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return String(value)
+  return date.toLocaleString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
+function buildArcscanMetrics(liveAnalytics) {
+  const payroll = liveAnalytics?.contracts?.payrollRouter
+  const swap = liveAnalytics?.contracts?.swapExecutor
+  const totalTransactions = Number(payroll?.transactions || 0) + Number(swap?.transactions || 0)
+  const totalTransfers = Number(payroll?.transfers || 0) + Number(swap?.transfers || 0)
+
+  if (!payroll && !swap) return ARCSCAN_METRICS
+
+  return [
+    {
+      label: 'Total Transactions',
+      value: formatNumber(totalTransactions),
+      detail: 'Payroll Router + SwapExecutor public Arcscan transaction count',
+      href: LINKS.arcscan,
+    },
+    {
+      label: 'Total Token Transfers',
+      value: formatNumber(totalTransfers),
+      detail: 'Combined public token transfer count across tracked WizPay contracts',
+      href: LINKS.arcscan,
+    },
+    {
+      label: 'Payroll Router TX',
+      value: formatNumber(payroll?.transactions),
+      detail: 'Primary WizPay Payroll Router live Arcscan count',
+      href: payroll?.arcscanUrl || LINKS.arcscan,
+    },
+    {
+      label: 'SwapExecutor TX',
+      value: formatNumber(swap?.transactions),
+      detail: 'WizPaySwapExecutor live Arcscan count',
+      href:
+        swap?.arcscanUrl ||
+        `https://testnet.arcscan.app/address/${SWAP_EXECUTOR_ADDRESS}`,
+    },
+  ]
+}
+
 
 const VERIFIED_USAGE_METRICS = [
   {
@@ -344,6 +408,38 @@ function ArcscanMetricCard({ metric, index }) {
 }
 
 function Analytics() {
+  const [liveAnalytics, setLiveAnalytics] = useState(null)
+  const [liveError, setLiveError] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadLiveAnalytics() {
+      try {
+        const response = await fetch(LIVE_ANALYTICS_URL, { cache: 'no-store' })
+        if (!response.ok) throw new Error(`Live analytics fetch failed: ${response.status}`)
+        const data = await response.json()
+        if (!cancelled) {
+          setLiveAnalytics(data)
+          setLiveError(false)
+        }
+      } catch {
+        if (!cancelled) setLiveError(true)
+      }
+    }
+
+    loadLiveAnalytics()
+    const interval = window.setInterval(loadLiveAnalytics, 12 * 60 * 60 * 1000)
+
+    return () => {
+      cancelled = true
+      window.clearInterval(interval)
+    }
+  }, [])
+
+  const liveArcscanMetrics = buildArcscanMetrics(liveAnalytics)
+  const liveUpdatedAt = formatLiveUpdatedAt(liveAnalytics?.updatedAt)
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#030510]">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
@@ -408,11 +504,11 @@ function Analytics() {
             <div className="mt-8 flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:gap-8">
               <span className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
-                Public on-chain activity snapshot
+                Live on-chain activity feed
               </span>
               <span className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.7)]" />
-                Snapshot from Arcscan public explorer
+                Auto-refreshing Arcscan/RPC data
               </span>
             </div>
           </div>
@@ -515,11 +611,21 @@ function Analytics() {
         <section className="section-shell pb-20 sm:pb-24">
           <SectionHeader
             title="Arcscan Snapshot"
-            description="Explorer-level public activity indicators for the primary WizPay Payroll Router contract on Arc Testnet."
+            description="Live public activity indicators for WizPay Payroll Router and WizPaySwapExecutor on Arc Testnet."
           />
 
+          <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-cyan-300/10 bg-cyan-300/[0.035] px-4 py-3 text-sm text-slate-300 sm:flex-row sm:items-center sm:justify-between">
+            <span>
+              Live source refreshes twice daily from public Arc RPC analytics JSON.
+            </span>
+            <span className="font-mono text-xs text-cyan-200">
+              Last updated: {liveUpdatedAt}
+              {liveError ? ' · fallback active' : ''}
+            </span>
+          </div>
+
           <div className="mt-7 grid gap-3 overflow-hidden rounded-[24px] border border-white/9 bg-white/[0.02] p-3 sm:grid-cols-2 lg:grid-cols-4">
-            {ARCSCAN_METRICS.map((metric, index) => (
+            {liveArcscanMetrics.map((metric, index) => (
               <ArcscanMetricCard key={metric.label} metric={metric} index={index} />
             ))}
           </div>
@@ -741,7 +847,7 @@ function Analytics() {
             </div>
           </div>
           <p className="mt-8 border-t border-white/8 pt-6 text-xs text-slate-600">
-            Static public activity snapshot for WizPay on Arc Testnet.
+            Live public activity feed for WizPay on Arc Testnet.
           </p>
         </div>
       </footer>
