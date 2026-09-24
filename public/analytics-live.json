@@ -1,4 +1,6 @@
 {
+  "status": "historical-testnet-archive",
+  "notice": "Historical Arc Testnet snapshot only. These metrics are not Arc Mainnet production traction. This legacy URL is retained for provenance and is not fetched by the landing pages.",
   "updatedAt": "2026-07-03T00:00:00+07:00",
   "source": "verified-static-seed",
   "network": "Arc Testnet",

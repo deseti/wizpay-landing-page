@@ -1,16 +1,31 @@
-# React + Vite
+# WizPay landing page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Marketing website for [wizpay.xyz](https://wizpay.xyz), built with React, Vite, and Tailwind CSS. Presents WizPay’s non-custodial stablecoin payment capabilities on Arc Mainnet.
 
-Currently, two official plugins are available:
+This repository contains presentation and content only. The production application is at [app.wizpay.xyz](https://app.wizpay.xyz); product source is maintained separately in [deseti/wizpay-core](https://github.com/deseti/wizpay-core).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Local development
 
-## React Compiler
+```bash
+npm ci
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Validation and production build
 
-## Expanding the ESLint configuration
+```bash
+npm run lint
+npm run build
+npm run preview
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The build produces `dist/`. Building and previewing do not deploy the site.
+
+## Content boundaries
+
+- Mainnet contract references live in `src/components/MainnetContracts.jsx`.
+- `/analytics` explains the retirement of the historical Testnet dashboard; it does not publish Mainnet metrics.
+- `public/analytics-live.json` is a labeled historical Testnet snapshot, retained at its old path for provenance. Neither page fetches it.
+- `src/docs/` and `wizpay_codebase_analysis.md` are archived development material, not current production documentation.
+- `public/hero-mockup.png` is an unused legacy illustration with fictional dashboard data. It is not used by the page or social metadata.
+- The legacy analytics updater is not part of the build and must not be used as a Mainnet data source.

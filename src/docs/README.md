@@ -1,4 +1,6 @@
-# WizPay - ARC Smart Payment Router
+# Archived Testnet documentation — WizPay Smart Payment Router
+
+> Historical development material only. The architecture, addresses, commands, roadmap, and production claims below are obsolete and do not describe current WizPay on Arc Mainnet. Retained for provenance; not linked or rendered by the landing page. For current product source, use [deseti/wizpay-core](https://github.com/deseti/wizpay-core); open the application at [app.wizpay.xyz](https://app.wizpay.xyz).
 
 A **production-ready**, non-custodial Smart Payment Router for the **ARC Layer-1 blockchain** by Circle. WizPay enables atomic cross-stablecoin payments with advanced features like fee collection, emergency pause, and token whitelisting.
 

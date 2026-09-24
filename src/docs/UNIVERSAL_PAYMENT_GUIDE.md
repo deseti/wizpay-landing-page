@@ -1,4 +1,6 @@
-# WizPay Universal Payment System
+# Archived Testnet guide — WizPay Universal Payment System
+
+> Historical Testnet experiments only. The results, limits, rates, addresses, and execution instructions below do not describe current Arc Mainnet behavior. Retained for provenance; not linked or rendered by the landing page. For current product source, use [deseti/wizpay-core](https://github.com/deseti/wizpay-core); open the application at [app.wizpay.xyz](https://app.wizpay.xyz).
 
 **Send ANY amount of ANY token to ANY token - Fully Flexible, No Hardcoding**
 

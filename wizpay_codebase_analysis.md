@@ -1,5 +1,7 @@
 # WizPay — Comprehensive Codebase Analysis
 
+> **Archived development analysis.** This May 2026 snapshot is not current Arc Mainnet documentation. Its wallet architecture, network support, StableFX, liquidity, and deployment descriptions must not be used as current product claims. See [WizPay Core](https://github.com/deseti/wizpay-core) for current source.
+
 > **Analysis Date:** May 3, 2026  
 > **Repo:** `wizpay-core` (monorepo)  
 > **Stack:** NestJS · Next.js · Solidity (Foundry) · PostgreSQL · Redis/BullMQ · Circle APIs · Docker
