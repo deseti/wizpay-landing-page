@@ -19,7 +19,7 @@ const sections = [
   },
   {
     id: 'technical-information', heading: 'Technical / Usage Information',
-    content: <p>Accessing the website or application sends requests to hosting and other infrastructure. These requests may expose IP addresses, browser and device details, requested URLs, referral information, timestamps, and error or diagnostic information to the systems handling them. The landing page loads fonts from Google Fonts, which receives request metadata when your browser requests those resources. The Analytics status page describes historical product metrics; its presence is not itself evidence of visitor tracking.</p>,
+    content: <p>Accessing the website or application sends requests to hosting and other infrastructure. These requests may expose IP addresses, browser and device details, requested URLs, referral information, timestamps, and error or diagnostic information to the systems handling them. The landing page loads fonts from Google Fonts, which receives request metadata when your browser requests those resources.</p>,
   },
   {
     id: 'uses', heading: 'How Information Is Used',
