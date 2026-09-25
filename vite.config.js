@@ -10,7 +10,7 @@ export default defineConfig({
     tailwindcss(),
     Sitemap({
       hostname: 'https://wizpay.xyz',
-      dynamicRoutes: ['/features', '/pricing', '/blog'],
+      dynamicRoutes: ['/features', '/pricing', '/blog', '/terms', '/privacy'],
       changefreq: 'weekly',
       priority: { '/': 1.0, '*': 0.8 },
       readable: true,

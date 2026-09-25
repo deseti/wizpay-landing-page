@@ -35,6 +35,9 @@
     @apply block min-h-11 w-full min-w-0 rounded-lg border border-white/10 bg-[#030510] px-3 py-2 font-mono text-xs text-slate-200;
   }
   .skip-link { @apply fixed left-4 top-4 z-50 -translate-y-24 rounded-lg bg-cyan-300 px-4 py-3 text-slate-950 focus:translate-y-0; }
+  .legal-content { overflow-wrap: anywhere; }
+  .legal-content a { @apply text-cyan-200 underline underline-offset-4; }
+  .legal-content ul { @apply list-disc space-y-3 pl-6; }
 }
 
 @layer utilities {

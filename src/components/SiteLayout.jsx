@@ -32,7 +32,8 @@ export function SiteFooter() {
         <nav aria-label="Footer navigation" className="flex flex-wrap content-start gap-x-6 gap-y-4 text-sm text-slate-300 md:max-w-md">
           <a href="https://github.com/deseti/wizpay-core">Core source ↗</a>
           <a href="https://github.com/deseti/wizpay-landing-page">Landing source ↗</a>
-          <a href="/analytics">Analytics status</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/privacy">Privacy Policy</a>
           <a href="https://x.com/wizpay_arc">X / Twitter ↗</a>
           <a href="mailto:connect@wizpay.xyz">connect@wizpay.xyz</a>
         </nav>

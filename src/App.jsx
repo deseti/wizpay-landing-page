@@ -1,10 +1,13 @@
 import Home from './pages/Home'
-import Analytics from './pages/Analytics'
+import Terms from './pages/Terms'
+import Privacy from './pages/Privacy'
 
 function App() {
   const path = window.location.pathname
 
-  return path === '/analytics' ? <Analytics /> : <Home />
+  if (path === '/terms') return <Terms />
+  if (path === '/privacy') return <Privacy />
+  return <Home />
 }
 
 export default App
